@@ -1,14 +1,14 @@
-#include <stdio.h>
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "LoadShaders.h"
 
 int main(int argc,char** argv){
-		// Initialise GLFW
 		if(!glfwInit())
 		{
 			fprintf(stderr,"Failed to initialize GLFW\n");
@@ -20,7 +20,6 @@ int main(int argc,char** argv){
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-		// Open a window and create its OpenGL context
 		GLFWwindow* window = glfwCreateWindow(1024,768,"Tutorial 02 - Red triangle",NULL,NULL);
 		if(window == NULL){
 			fprintf(stderr,"Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
@@ -29,17 +28,14 @@ int main(int argc,char** argv){
 		}
 		glfwMakeContextCurrent(window);
 
-		// Initialize GLEW
 		glewExperimental = true; // Needed for core profile
 		if(glewInit() != GLEW_OK) {
 			fprintf(stderr,"Failed to initialize GLEW\n");
 			return -1;
 		}
 
-		// Ensure we can capture the escape key being pressed below
 		glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
 
-		// Dark blue background
 		glClearColor(0.0f,0.0f,0.4f,0.0f);
 
 		GLuint VertexArrayID;
@@ -49,12 +45,17 @@ int main(int argc,char** argv){
 		// Create and compile our GLSL program from the shaders
 		GLuint programID = LoadShaders("SimpleVertexShader.vertexshader","SimpleFragmentShader.fragmentshader");
 
-
 		static const GLfloat g_vertex_buffer_data[] ={
 			-1.0f,-1.0f,0.0f,
 			1.0f,-1.0f,0.0f,
 			0.0f,1.0f,0.0f,
 		};
+
+		glm::mat4 viewMatrix = glm::lookAt(glm::vec3(4,3,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
+		glm::mat4 perspectiveMatrix = glm::perspective(45.0,4.0/3.0,0.1,100.0);
+		glm::mat4 projectionMatrix = perspectiveMatrix * viewMatrix;
+
+		GLint MatrixID = glGetUniformLocation(programID,"MVP");
 
 		GLuint vertexbuffer;
 		glGenBuffers(1,&vertexbuffer);
@@ -62,14 +63,11 @@ int main(int argc,char** argv){
 		glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data,GL_STATIC_DRAW);
 
 		do{
-
-			// Clear the screen
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			// Use our shader
 			glUseProgram(programID);
+			glUniformMatrix4fv(MatrixID,1,GL_FALSE,&projectionMatrix[0][0]);
 
-			// 1rst attribute buffer : vertices
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
 			glVertexAttribPointer(
@@ -81,25 +79,21 @@ int main(int argc,char** argv){
 				(void*)0            // array buffer offset
 				);
 
-			// Draw the triangle !
 			glDrawArrays(GL_TRIANGLES,0,3); // 3 indices starting at 0 -> 1 triangle
 
 			glDisableVertexAttribArray(0);
 
-			// Swap buffers
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 
-		} // Check if the ESC key was pressed or the window was closed
+		}
 		while(glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
 
-		// Cleanup VBO
 		glDeleteBuffers(1,&vertexbuffer);
 		glDeleteVertexArrays(1,&VertexArrayID);
 		glDeleteProgram(programID);
 
-		// Close OpenGL window and terminate GLFW
 		glfwTerminate();
 
 		return 0;
