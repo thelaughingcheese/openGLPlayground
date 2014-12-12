@@ -5,8 +5,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <windows.h>
 
 #include "LoadShaders.h"
+#include "Camera.h"
 
 int main(int argc,char** argv){
 		if(!glfwInit())
@@ -51,9 +53,8 @@ int main(int argc,char** argv){
 			0.0f,1.0f,0.0f,
 		};
 
-		glm::mat4 viewMatrix = glm::lookAt(glm::vec3(4,3,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
-		glm::mat4 perspectiveMatrix = glm::perspective(45.0,4.0/3.0,0.1,100.0);
-		glm::mat4 projectionMatrix = perspectiveMatrix * viewMatrix;
+		Camera camera(45,4.0/3.0,glm::vec3(0,0,5));
+		glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 
 		GLint MatrixID = glGetUniformLocation(programID,"MVP");
 
@@ -62,8 +63,37 @@ int main(int argc,char** argv){
 		glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
 		glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data,GL_STATIC_DRAW);
 
+		double xMouse, yMouse;
+		glfwSetCursorPos(window,512,768/2);
+		glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
+		double lastTime = glfwGetTime();
+		
 		do{
 			glClear(GL_COLOR_BUFFER_BIT);
+			glfwGetCursorPos(window,&xMouse,&yMouse);
+			xMouse -= 512; xMouse /= 16;
+			yMouse -= 768/2; yMouse /= 16;
+			glfwSetCursorPos(window,512,768/2);
+			glm::vec3 changePos(0,0,0);
+			if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+				changePos += 0.05f * camera.getForwardVector();
+			}
+			if(glfwGetKey(window,GLFW_KEY_A) == GLFW_PRESS){
+				changePos += -0.05f * camera.getRightVector();
+			}
+			if(glfwGetKey(window,GLFW_KEY_S) == GLFW_PRESS){
+				changePos += -0.05f * camera.getForwardVector();
+			}
+			if(glfwGetKey(window,GLFW_KEY_D) == GLFW_PRESS){
+				changePos += 0.05f * camera.getRightVector();
+			}
+			camera.setPos(camera.getPos() + changePos);
+
+			camera.setOri(glm::vec2((-xMouse + camera.getOri().x),min(89.99,max(-89.99,-yMouse + camera.getOri().y))));
+			projectionMatrix = camera.getProjectionMatrix();
+
+			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
+			lastTime = glfwGetTime();
 
 			glUseProgram(programID);
 			glUniformMatrix4fv(MatrixID,1,GL_FALSE,&projectionMatrix[0][0]);
@@ -85,7 +115,7 @@ int main(int argc,char** argv){
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
-
+			while(glfwGetTime() - lastTime < 0.012);
 		}
 		while(glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
