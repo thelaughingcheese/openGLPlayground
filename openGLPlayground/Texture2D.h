@@ -7,7 +7,7 @@
 #define TEXTURE2D
 
 class Texture2D{
-public:
+private:
 	unsigned char* bitmap;
 	unsigned int width,height;
 	GLuint glTextureID;
