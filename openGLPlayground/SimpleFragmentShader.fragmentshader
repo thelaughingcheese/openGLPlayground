@@ -1,12 +1,14 @@
 #version 330 core
 
-// Ouput data
+in vec3 Normal;
+in vec2 UV;
+
 out vec3 color;
+
+uniform sampler2D textureSample;
 
 void main()
 {
-
-	// Output color = red 
-	color = vec3(1,0,0);
-
+	//color = vec3((gl_FragCoord.z-0.97)*30);
+	color = texture(textureSample, UV).rgb;
 }
