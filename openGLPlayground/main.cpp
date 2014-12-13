@@ -123,7 +123,7 @@ int main(int argc,char** argv){
 
 		//----------------
 
-		Texture2D sampleTex("uvtemplate.bmp");
+		Texture2D sampleTex("textures/uvtemplate.bmp");
 
 		GLuint VertexArrayID;
 		glGenVertexArrays(1,&VertexArrayID);

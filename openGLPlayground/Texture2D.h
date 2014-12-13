@@ -1,10 +1,10 @@
 /*
 2D texture
 */
-#include <GL/glew.h>
-
 #ifndef TEXTURE2D
 #define TEXTURE2D
+
+#include <GL/glew.h>
 
 class Texture2D{
 private:
