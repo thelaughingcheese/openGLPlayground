@@ -5,10 +5,10 @@
 //0 is Null entity
 EntityID NextEntityID = 1;
 
-std::unordered_map<EntityID,Entity*,std::hash<EntityID>,std::equal_to<EntityID>,std::allocator<std::pair<EntityID,Entity*>>> Entities;
+std::unordered_map<EntityID,Entity*> Entities;
 
-std::unordered_map<const char*,Model*,std::hash<const char*>,std::equal_to<const char*>,std::allocator<std::pair<const char*,Model*>>> loadedModels;
-std::unordered_map<const char*,Texture2D*,std::hash<const char*>,std::equal_to<const char*>,std::allocator<std::pair<const char*,Texture2D*>>> loadedTextures;
+std::unordered_map<const char*,Model*> loadedModels;
+std::unordered_map<const char*,Texture2D*> loadedTextures;
 
 EntityID Utility::getNewEntityID(){
 	return NextEntityID++;

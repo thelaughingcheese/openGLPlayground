@@ -11,4 +11,5 @@ void main()
 {
 	//color = vec3((gl_FragCoord.z-0.97)*30);
 	color = texture(textureSample, UV).rgb;
+	//color = vec3(1,0,0);
 }

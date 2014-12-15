@@ -10,7 +10,7 @@ Camera::Camera(float f, float asp, glm::vec3 pos, glm::vec2 ori){
 	aspectRatio = asp;
 
 	nearClipping = 0.1;
-	farClipping = 100.0;
+	farClipping = 10000.0;
 }
 
 void Camera::setPos(glm::vec3 pos){

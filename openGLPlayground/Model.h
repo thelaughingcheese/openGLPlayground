@@ -17,7 +17,9 @@ private:
 	glm::vec3* verticies;
 	glm::vec3* normals;
 	glm::vec2* uvs;
-	int vertexCount;
+	unsigned int vertexCount;
+	unsigned int normalCount;
+	unsigned int uvCount;
 
 	GLuint vertexArray;
 	GLuint vertexBuffer;
@@ -28,6 +30,14 @@ private:
 public:
 	Model(const char* modelName);
 	~Model();
+
+	GLuint getVertexBuffer();
+	GLuint getNormalBuffer();
+	GLuint getUvBuffer();
+
+	unsigned int getVertexCount();
+	unsigned int getNormalCount();
+	unsigned int getUvCount();
 };
 
 #endif
