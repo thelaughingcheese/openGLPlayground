@@ -9,12 +9,22 @@ entity distruction
 #include <glm/glm.hpp>
 #include "Model.h"
 #include "Entity.h"
+#include "Camera.h"
 
 namespace Utility{
+	extern GLuint basicShaderProgram;
+	extern GLuint mvpUniform;
+	extern GLuint baseTextureUniform;
+	
+	extern Camera* curCamera;
+
+	void initShaders();
+
 	EntityID getNewEntityID();
 
-	Entity* createEntity();
-	void destroyEntity();
+	void trackEntity(Entity* ent);
+	void untrackEntity(EntityID id);
+	void untrackEntity(Entity* ent);
 
 	Entity* getEntityByID(EntityID id);
 

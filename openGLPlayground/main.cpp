@@ -7,10 +7,10 @@
 #include <glm/gtx/string_cast.hpp>
 #include <windows.h>
 
-#include "LoadShaders.h"
+#include "Utility.h"
 #include "Camera.h"
 #include "Texture2D.h"
-#include "Model.h"
+#include "ModelEntity.h"
 
 int main(int argc,char** argv){
 		if(!glfwInit())
@@ -47,20 +47,21 @@ int main(int argc,char** argv){
 		//----------------
 
 		Texture2D sampleTex("textures/uvtemplate.bmp");
-		Model sampleModel("hand");
+		ModelEntity xAxisArrow("arrow");
+		ModelEntity yAxisArrow("arrow");
+		yAxisArrow.setOrientation(glm::vec3(0,0,90));
+		ModelEntity zAxisArrow("arrow");
+		zAxisArrow.setOrientation(glm::vec3(0,-90,0));
 
 		GLuint VertexArrayID;
 		glGenVertexArrays(1,&VertexArrayID);
 		glBindVertexArray(VertexArrayID);
 
 		// Create and compile our GLSL program from the shaders
-		GLuint programID = LoadShaders("SimpleVertexShader.vertexshader","SimpleFragmentShader.fragmentshader");
+		Utility::initShaders();
 
-		Camera camera(45,4.0/3.0,glm::vec3(0,0,10));
-		glm::mat4 projectionMatrix = camera.getProjectionMatrix();
-
-		GLint MatrixID = glGetUniformLocation(programID,"MVP");
-		GLint textureLocation = glGetUniformLocation(programID,"sampleTexture");
+		Camera camera(45,4.0/3.0,glm::vec3(0,10,30));
+		Utility::curCamera = &camera;
 
 		/*GLuint vertexbuffer;
 		glGenBuffers(1,&vertexbuffer);
@@ -84,84 +85,32 @@ int main(int argc,char** argv){
 			glfwSetCursorPos(window,512,768/2);
 			glm::vec3 changePos(0,0,0);
 			if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-				changePos += 0.05f * camera.getForwardVector();
+				changePos += 0.1f * camera.getForwardVector();
 			}
 			if(glfwGetKey(window,GLFW_KEY_A) == GLFW_PRESS){
-				changePos += -0.05f * camera.getRightVector();
+				changePos += -0.1f * camera.getRightVector();
 			}
 			if(glfwGetKey(window,GLFW_KEY_S) == GLFW_PRESS){
-				changePos += -0.05f * camera.getForwardVector();
+				changePos += -0.1f * camera.getForwardVector();
 			}
 			if(glfwGetKey(window,GLFW_KEY_D) == GLFW_PRESS){
-				changePos += 0.05f * camera.getRightVector();
+				changePos += 0.1f * camera.getRightVector();
 			}
 			camera.setPos(camera.getPos() + changePos);
 
 			camera.setOri(glm::vec2((-xMouse + camera.getOri().x),min(89.99,max(-89.99,-yMouse + camera.getOri().y))));
-			projectionMatrix = camera.getProjectionMatrix();
 
 			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
 			lastTime = glfwGetTime();
 
-			glUseProgram(programID);
-			glUniformMatrix4fv(MatrixID,1,GL_FALSE,&projectionMatrix[0][0]);
+			glUseProgram(Utility::basicShaderProgram);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D,sampleTex.getTextureID());
-			glUniform1i(textureLocation,0);
+			glUniform1i(Utility::baseTextureUniform,0);
 
-			/*glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
-			glVertexAttribPointer(
-				0,
-				3,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*)0
-				);
-			glEnableVertexAttribArray(1);
-			glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
-			glVertexAttribPointer(
-				1,
-				2,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*)0
-				);
-
-
-			glDrawArrays(GL_TRIANGLES,0,36); // 3 indices starting at 0 -> 1 triangle
-
-			glDisableVertexAttribArray(0);
-			glDisableVertexAttribArray(1);*/
-
-			glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER,sampleModel.getVertexBuffer());
-			glVertexAttribPointer(
-				0,
-				3,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*)0
-				);
-
-			glEnableVertexAttribArray(1);
-			glBindBuffer(GL_ARRAY_BUFFER,sampleModel.getUvBuffer());
-			glVertexAttribPointer(
-				1,
-				2,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*)0
-				);
-			glDrawArrays(GL_TRIANGLES,0,sampleModel.getVertexCount());
-
-			glDisableVertexAttribArray(0);
-			glDisableVertexAttribArray(1);
-
+			xAxisArrow.draw();
+			yAxisArrow.draw();
+			zAxisArrow.draw();
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
@@ -172,7 +121,7 @@ int main(int argc,char** argv){
 
 		//glDeleteBuffers(1,&vertexbuffer);
 		//glDeleteVertexArrays(1,&VertexArrayID);
-		glDeleteProgram(programID);
+		glDeleteProgram(Utility::basicShaderProgram);
 
 		glfwTerminate();
 

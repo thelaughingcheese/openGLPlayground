@@ -3,6 +3,11 @@
 
 Entity::Entity(){
 	entityID = Utility::getNewEntityID();
+	Utility::trackEntity(this);
+}
+
+Entity::~Entity(){
+	Utility::untrackEntity(entityID);
 }
 
 EntityID Entity::getEntityID(){

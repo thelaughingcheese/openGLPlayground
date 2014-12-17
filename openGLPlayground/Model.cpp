@@ -4,12 +4,11 @@
 #include <sstream>
 #include <vector>
 #include <cstring>
+#include "GenericMvpSolid.h"
 
 Model::Model(const char* modelName){
-	verticies = 0;
-	normals = 0;
-	uvs = 0;
-	textures = 0;
+	meshes = 0;
+	materials= 0;
 
 	//load raw data
 	std::string objFilePath = "models/";
@@ -25,7 +24,8 @@ Model::Model(const char* modelName){
 	std::vector<glm::vec3> verts;
 	std::vector<glm::vec3> norms;
 	std::vector<glm::vec2> texcoords;
-	std::vector<std::string> faces;
+	std::vector<std::vector<std::string>> faceGroups;
+	std::vector<std::string> materialNames;
 
 	while(!objFile.eof()){
 		char line[128];
@@ -55,122 +55,91 @@ Model::Model(const char* modelName){
 			verts.push_back(glm::vec3(x,y,z));
 		}
 		else if(line[0] == 'f'){
-			faces.push_back(&line[1]);
+			faceGroups.back().push_back(&line[1]);
 		}
 		else if(line[0] == '#'){
 			//comment
+		}
+		else if(line[0] == 'u' && line[1] == 's' && line[2] == 'e' && line[3] == 'm' && line[4] == 't' && line[5] == 'l'){
+			materialNames.push_back(&line[7]);
+			faceGroups.push_back(std::vector<std::string>());
 		}
 		else{
 			std::cout << "Line unrecognised: " << line << std::endl;
 		}
 	}
 
-	std::vector<glm::vec3> newVerts;
-	std::vector<glm::vec3> newNorms;
-	std::vector<glm::vec2> newUvs;
+	materialsCount = materialNames.size();
+	materials = new GenericMvpSolid[materialsCount];
+	meshCount = faceGroups.size();
+	meshes = new Mesh[meshCount];
 
-	for(int i=0;i<faces.size();i++){
-		int vertIndex[3];
-		int normIndex[3];
-		int uvIndex[3];
+	for(int k=0; k<meshCount; k++){
+		std::vector<glm::vec3> newVerts;
+		std::vector<glm::vec3> newNorms;
+		std::vector<glm::vec2> newUvs;
 
-		std::string buffer;
-		/*std::getline(data,buffer,'/'); vertIndex[0] = std::stoi(buffer);
-		std::getline(data,buffer,'/'); uvIndex[0] = std::stoi(buffer);
-		std::getline(data,buffer,'/'); normIndex[0] = std::stoi(buffer);
+		for(int i=0; i<faceGroups[k].size(); i++){
+			int vertIndex[3];
+			int normIndex[3];
+			int uvIndex[3];
 
-		std::getline(data,buffer,'/'); vertIndex[1] = std::stoi(buffer);
-		std::getline(data,buffer,'/'); uvIndex[1] = std::stoi(buffer);
-		std::getline(data,buffer,'/'); normIndex[1] = std::stoi(buffer);
+			std::string buffer;
+			sscanf(faceGroups[k][i].data(),"%d/%d/%d %d/%d/%d %d/%d/%d",&vertIndex[0],&uvIndex[0],&normIndex[0],&vertIndex[1],&uvIndex[1],&normIndex[1],&vertIndex[2],&uvIndex[2],&normIndex[2]);
 
-		std::getline(data,buffer,'/'); vertIndex[2] = std::stoi(buffer);
-		std::getline(data,buffer,'/'); uvIndex[2] = std::stoi(buffer);
-		std::getline(data,buffer,'/'); normIndex[2] = std::stoi(buffer);*/
+			newVerts.push_back(verts[vertIndex[0] - 1]);
+			newVerts.push_back(verts[vertIndex[1] - 1]);
+			newVerts.push_back(verts[vertIndex[2] - 1]);
 
-		sscanf(faces[i].data(),"%d/%d/%d %d/%d/%d %d/%d/%d",&vertIndex[0],&uvIndex[0],&normIndex[0],&vertIndex[1],&uvIndex[1],&normIndex[1],&vertIndex[2],&uvIndex[2],&normIndex[2]);
+			newNorms.push_back(norms[normIndex[0] - 1]);
+			newNorms.push_back(norms[normIndex[1] - 1]);
+			newNorms.push_back(norms[normIndex[2] - 1]);
 
-		newVerts.push_back(verts[vertIndex[0] - 1]);
-		newVerts.push_back(verts[vertIndex[1] - 1]);
-		newVerts.push_back(verts[vertIndex[2] - 1]);
+			newUvs.push_back(texcoords[uvIndex[0] - 1]);
+			newUvs.push_back(texcoords[uvIndex[1] - 1]);
+			newUvs.push_back(texcoords[uvIndex[2] - 1]);
+		}
 
-		newNorms.push_back(norms[normIndex[0] - 1]);
-		newNorms.push_back(norms[normIndex[1] - 1]);
-		newNorms.push_back(norms[normIndex[2] - 1]);
+		meshes[k].vertexCount = newVerts.size();
+		meshes[k].normalCount = newNorms.size();
+		meshes[k].uvCount = newUvs.size();
 
-		newUvs.push_back(texcoords[uvIndex[0] - 1]);
-		newUvs.push_back(texcoords[uvIndex[1] - 1]);
-		newUvs.push_back(texcoords[uvIndex[2] - 1]);
-	}
+		meshes[k].verticies = new glm::vec3[meshes[0].vertexCount];
+		meshes[k].normals = new glm::vec3[meshes[0].normalCount];
+		meshes[k].uvs = new glm::vec2[meshes[0].uvCount];
 
-	vertexCount = newVerts.size();
-	normalCount = newNorms.size();
-	uvCount = newUvs.size();
-
-	verticies = new glm::vec3[vertexCount];
-	normals = new glm::vec3[normalCount];
-	uvs = new glm::vec2[uvCount];
-
-	for(unsigned int i=0; i<vertexCount; i++){
-		verticies[i] = newVerts[i];
-	}
-	for(unsigned int i=0; i<normalCount; i++){
-		normals[i] = newNorms[i];
-	}
-	for(unsigned int i=0; i<uvCount; i++){
-		uvs[i] = newUvs[i];
+		for(unsigned int i=0; i<meshes[0].vertexCount; i++){
+			meshes[k].verticies[i] = newVerts[i];
+		}
+		for(unsigned int i=0; i<meshes[0].normalCount; i++){
+			meshes[k].normals[i] = newNorms[i];
+		}
+		for(unsigned int i=0; i<meshes[0].uvCount; i++){
+			meshes[k].uvs[i] = newUvs[i];
+		}
 	}
 
 	//create buffers
-	glGenVertexArrays(1,&vertexArray);
-	glGenBuffers(1,&vertexBuffer);
-	glGenBuffers(1,&normalBuffer);
-	glGenBuffers(1,&uvBuffer);
+	for(int i=0; i<meshCount; i++){
+		meshes[i].createBuffers();
+	}
 
-	glBindVertexArray(vertexArray);
-
-	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER,vertexCount*sizeof(glm::vec3),verticies,GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ARRAY_BUFFER,normalBuffer);
-	glBufferData(GL_ARRAY_BUFFER,normalCount*sizeof(glm::vec3),normals,GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
-	glBufferData(GL_ARRAY_BUFFER,uvCount*sizeof(glm::vec2),uvs,GL_STATIC_DRAW);
+	//add materials
 }
 
 Model::~Model(){
-	if(verticies){
-		delete[] verticies;
-		delete[] normals;
-		delete[] uvs;
+	delete[] meshes;
+}
 
-		glDeleteVertexArrays(1,&vertexArray);
-		glDeleteBuffers(1,&vertexBuffer);
-		glDeleteBuffers(1,&normalBuffer);
-		glDeleteBuffers(1,&uvBuffer);
+void Model::draw(){
+	for(int i=0; i<meshCount;i++){
+		//load uniform dataz
+		meshes[i].loadVertexData();
+		glDrawArrays(GL_TRIANGLES,0,meshes[i].vertexCount);
+		meshes[i].unloadVertexData();
 	}
 }
 
-GLuint Model::getVertexBuffer(){
-	return vertexBuffer;
-}
+void Model::addMesh(){
 
-GLuint Model::getNormalBuffer(){
-	return normalBuffer;
-}
-
-GLuint Model::getUvBuffer(){
-	return uvBuffer;
-}
-
-unsigned int Model::getVertexCount(){
-	return vertexCount;
-}
-
-unsigned int Model::getNormalCount(){
-	return normalCount;
-}
-
-unsigned int Model::getUvCount(){
-	return uvCount;
 }

@@ -25,7 +25,7 @@ public:
 	void setAspect(float f);
 	float getAspect();
 
-	glm::mat4 getProjectionMatrix();
+	glm::mat4 getVPMatrix();
 	glm::vec3 getForwardVector();
 	glm::vec3 getRightVector();
 };

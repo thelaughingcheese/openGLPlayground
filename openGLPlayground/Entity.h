@@ -12,6 +12,7 @@ private:
 	EntityID entityID;
 public:
 	Entity();
+	virtual ~Entity();
 
 	EntityID getEntityID();
 };

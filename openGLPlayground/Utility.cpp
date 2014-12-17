@@ -1,6 +1,7 @@
 #include "Utility.h"
 #include <unordered_map>
 #include "Texture2D.h"
+#include "LoadShaders.h"
 
 //0 is Null entity
 EntityID NextEntityID = 1;
@@ -10,12 +11,30 @@ std::unordered_map<EntityID,Entity*> Entities;
 std::unordered_map<const char*,Model*> loadedModels;
 std::unordered_map<const char*,Texture2D*> loadedTextures;
 
+GLuint Utility::basicShaderProgram;
+GLuint Utility::mvpUniform;
+GLuint Utility::baseTextureUniform;
+Camera* Utility::curCamera;
+
+void Utility::initShaders(){
+	basicShaderProgram = LoadShaders("SimpleVertexShader.vertexshader","SimpleFragmentShader.fragmentshader");
+	mvpUniform = glGetUniformLocation(basicShaderProgram,"MVP");
+	baseTextureUniform = glGetUniformLocation(basicShaderProgram,"sampleTexture");
+}
+
 EntityID Utility::getNewEntityID(){
 	return NextEntityID++;
 }
 
-Entity* Utility::createEntity();
-void Utility::destroyEntity();
+void Utility::trackEntity(Entity* ent){
+	Entities.insert(std::pair<EntityID,Entity*>(ent->getEntityID(),ent));
+}
+void Utility::untrackEntity(EntityID id){
+	Entities.erase(id);
+}
+void Utility::untrackEntity(Entity* ent){
+	Entities.erase(ent->getEntityID());
+}
 
 Entity* getEntityByID(EntityID id){
 	try{

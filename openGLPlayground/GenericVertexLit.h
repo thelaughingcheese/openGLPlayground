@@ -1,0 +1,6 @@
+#ifndef GENERICVERTEXLIT
+#define GENERICVERTEXLIT
+
+
+
+#endif

@@ -11,10 +11,12 @@ texture
 
 #include <glm/glm.hpp>
 #include <GL/glew.h>
+#include "Mesh.h"
+#include "Material.h"
 
 class Model{
 private:
-	glm::vec3* verticies;
+	/*glm::vec3* verticies;
 	glm::vec3* normals;
 	glm::vec2* uvs;
 	unsigned int vertexCount;
@@ -24,20 +26,26 @@ private:
 	GLuint vertexArray;
 	GLuint vertexBuffer;
 	GLuint normalBuffer;
-	GLuint uvBuffer;
-	GLuint* textures;
-	int textureCount;
+	GLuint uvBuffer;*/
+	Mesh* meshes;
+	Material* materials;
+	unsigned int meshCount;
+	unsigned int materialsCount;
+
+	void addMesh();
 public:
 	Model(const char* modelName);
 	~Model();
 
-	GLuint getVertexBuffer();
+	void draw();
+
+	/*GLuint getVertexBuffer();
 	GLuint getNormalBuffer();
 	GLuint getUvBuffer();
 
-	unsigned int getVertexCount();
+	/*unsigned int getVertexCount();
 	unsigned int getNormalCount();
-	unsigned int getUvCount();
+	unsigned int getUvCount();*/
 };
 
 #endif

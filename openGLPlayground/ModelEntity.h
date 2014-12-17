@@ -17,20 +17,19 @@ private:
 	glm::vec3 orientation;	//euler
 	glm::mat4 worldTransform;
 public:
-	ModelEntity();
 	ModelEntity(const char* modelName);
 	~ModelEntity();
 
 	void setPosition(glm::vec3 pos);
 	glm::vec3 getPosition();
 
-	void setOrientation(glm::vec3 pos);
+	void setOrientation(glm::vec3 ori);
 	glm::vec3 getOrientation();
 
 	void setModel(const char* modelName);
 	Model* getModel();
 
-	void draw();
+	virtual void draw();
 };
 
 #endif

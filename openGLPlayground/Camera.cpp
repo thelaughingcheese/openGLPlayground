@@ -46,7 +46,7 @@ float Camera::getAspect(){
 	return aspectRatio;
 }
 
-glm::mat4 Camera::getProjectionMatrix(){
+glm::mat4 Camera::getVPMatrix(){
 	glm::vec3 lookAt = position + orientationMatrix * glm::vec3(0,0,-1);
 	return glm::perspective(fov,aspectRatio,nearClipping,farClipping) * glm::lookAt(position,lookAt,glm::vec3(0,1,0));
 }
