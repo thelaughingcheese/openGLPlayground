@@ -54,9 +54,6 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Fundementals</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Fundementals</Filter>
-    </ClCompile>
     <ClCompile Include="GenericMvpSolid.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
@@ -101,6 +98,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="SimpleVertexShader.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GenericMvpSolid.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GenericMvpSolid.vertexshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

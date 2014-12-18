@@ -10,12 +10,9 @@ entity distruction
 #include "Model.h"
 #include "Entity.h"
 #include "Camera.h"
+#include "Material.h"
 
 namespace Utility{
-	extern GLuint basicShaderProgram;
-	extern GLuint mvpUniform;
-	extern GLuint baseTextureUniform;
-	
 	extern Camera* curCamera;
 
 	void initShaders();
@@ -30,6 +27,8 @@ namespace Utility{
 
 	Model* getModel(const char* modelName);
 	GLuint getTexture(const char* textureName);
+
+	Material* loadMaterialFromFile(char* materialName);
 }
 
 #endif

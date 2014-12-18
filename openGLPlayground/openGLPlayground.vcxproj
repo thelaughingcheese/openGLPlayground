@@ -71,7 +71,6 @@
     <ClCompile Include="GenericMvpSolid.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelEntity.cpp" />
@@ -92,6 +91,8 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\GenericMvpSolid.fragmentshader" />
+    <None Include="shaders\GenericMvpSolid.vertexshader" />
     <None Include="SimpleFragmentShader.fragmentshader" />
     <None Include="SimpleVertexShader.vertexshader" />
   </ItemGroup>

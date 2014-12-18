@@ -85,16 +85,16 @@ int main(int argc,char** argv){
 			glfwSetCursorPos(window,512,768/2);
 			glm::vec3 changePos(0,0,0);
 			if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-				changePos += 0.1f * camera.getForwardVector();
+				changePos += 0.4f * camera.getForwardVector();
 			}
 			if(glfwGetKey(window,GLFW_KEY_A) == GLFW_PRESS){
-				changePos += -0.1f * camera.getRightVector();
+				changePos += -0.4f * camera.getRightVector();
 			}
 			if(glfwGetKey(window,GLFW_KEY_S) == GLFW_PRESS){
-				changePos += -0.1f * camera.getForwardVector();
+				changePos += -0.4f * camera.getForwardVector();
 			}
 			if(glfwGetKey(window,GLFW_KEY_D) == GLFW_PRESS){
-				changePos += 0.1f * camera.getRightVector();
+				changePos += 0.4f * camera.getRightVector();
 			}
 			camera.setPos(camera.getPos() + changePos);
 
@@ -103,10 +103,10 @@ int main(int argc,char** argv){
 			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
 			lastTime = glfwGetTime();
 
-			glUseProgram(Utility::basicShaderProgram);
+			/*glUseProgram(Utility::basicShaderProgram);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D,sampleTex.getTextureID());
-			glUniform1i(Utility::baseTextureUniform,0);
+			glUniform1i(Utility::baseTextureUniform,0);*/
 
 			xAxisArrow.draw();
 			yAxisArrow.draw();
@@ -121,7 +121,7 @@ int main(int argc,char** argv){
 
 		//glDeleteBuffers(1,&vertexbuffer);
 		//glDeleteVertexArrays(1,&VertexArrayID);
-		glDeleteProgram(Utility::basicShaderProgram);
+		//glDeleteProgram(Utility::basicShaderProgram);
 
 		glfwTerminate();
 

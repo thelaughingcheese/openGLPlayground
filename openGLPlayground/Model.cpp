@@ -70,6 +70,7 @@ Model::Model(const char* modelName){
 	}
 
 	materialsCount = materialNames.size();
+	//TODO change materials to array of pointers to material and pupulate with utility functions
 	materials = new GenericMvpSolid[materialsCount];
 	meshCount = faceGroups.size();
 	meshes = new Mesh[meshCount];
@@ -125,15 +126,21 @@ Model::Model(const char* modelName){
 	}
 
 	//add materials
+	//placeholder
+	materials = new GenericMvpSolid[1];
+	materialsCount = 1;
+	((GenericMvpSolid*)materials)->colour = glm::vec3(0,1,0);
 }
 
 Model::~Model(){
 	delete[] meshes;
 }
 
-void Model::draw(){
+void Model::draw(glm::mat4& mvp){
 	for(int i=0; i<meshCount;i++){
-		//load uniform dataz
+		//placeholder
+		materials->loadUniforms(mvp);
+
 		meshes[i].loadVertexData();
 		glDrawArrays(GL_TRIANGLES,0,meshes[i].vertexCount);
 		meshes[i].unloadVertexData();

@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "Texture2D.h"
 #include "LoadShaders.h"
+#include "GenericMvpSolid.h"
 
 //0 is Null entity
 EntityID NextEntityID = 1;
@@ -11,15 +12,10 @@ std::unordered_map<EntityID,Entity*> Entities;
 std::unordered_map<const char*,Model*> loadedModels;
 std::unordered_map<const char*,Texture2D*> loadedTextures;
 
-GLuint Utility::basicShaderProgram;
-GLuint Utility::mvpUniform;
-GLuint Utility::baseTextureUniform;
 Camera* Utility::curCamera;
 
 void Utility::initShaders(){
-	basicShaderProgram = LoadShaders("SimpleVertexShader.vertexshader","SimpleFragmentShader.fragmentshader");
-	mvpUniform = glGetUniformLocation(basicShaderProgram,"MVP");
-	baseTextureUniform = glGetUniformLocation(basicShaderProgram,"sampleTexture");
+	MaterialDictionary::initMaterials();
 }
 
 EntityID Utility::getNewEntityID(){
@@ -65,4 +61,9 @@ GLuint Utility::getTexture(const char* textureName){
 		loadedTextures.insert(std::pair<const char*,Texture2D*>(textureName,newTexture));
 		return newTexture->getTextureID();
 	}
+}
+
+Material* Utility::loadMaterialFromFile(char* materialName){
+	//TODO find material file, create new material instance, populate with texture data
+	return 0;
 }
