@@ -17,7 +17,7 @@ texture
 class Model{
 private:
 	Mesh* meshes;
-	Material* materials;
+	Material** materials;
 	unsigned int meshCount;
 	unsigned int materialsCount;
 

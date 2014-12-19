@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstring>
 #include "GenericMvpSolid.h"
+#include "Utility.h"
 
 Model::Model(const char* modelName){
 	meshes = 0;
@@ -61,7 +62,9 @@ Model::Model(const char* modelName){
 			//comment
 		}
 		else if(line[0] == 'u' && line[1] == 's' && line[2] == 'e' && line[3] == 'm' && line[4] == 't' && line[5] == 'l'){
-			materialNames.push_back(&line[7]);
+			std::string matName = &line[7];
+			matName = matName.substr(0,matName.size()-1);
+			materialNames.push_back(matName);
 			faceGroups.push_back(std::vector<std::string>());
 		}
 		else{
@@ -70,17 +73,16 @@ Model::Model(const char* modelName){
 	}
 
 	materialsCount = materialNames.size();
-	//TODO change materials to array of pointers to material and pupulate with utility functions
-	materials = new GenericMvpSolid[materialsCount];
+	materials = new Material*[materialsCount];
 	meshCount = faceGroups.size();
 	meshes = new Mesh[meshCount];
 
-	for(int k=0; k<meshCount; k++){
+	for(unsigned int k=0; k<meshCount; k++){
 		std::vector<glm::vec3> newVerts;
 		std::vector<glm::vec3> newNorms;
 		std::vector<glm::vec2> newUvs;
 
-		for(int i=0; i<faceGroups[k].size(); i++){
+		for(unsigned int i=0; i<faceGroups[k].size(); i++){
 			int vertIndex[3];
 			int normIndex[3];
 			int uvIndex[3];
@@ -121,25 +123,30 @@ Model::Model(const char* modelName){
 	}
 
 	//create buffers
-	for(int i=0; i<meshCount; i++){
+	for(unsigned int i=0; i<meshCount; i++){
 		meshes[i].createBuffers();
 	}
 
 	//add materials
-	//placeholder
-	materials = new GenericMvpSolid[1];
-	materialsCount = 1;
-	((GenericMvpSolid*)materials)->colour = glm::vec3(0,1,0);
+	for(unsigned int i=0; i<materialsCount; i++){
+		materials[i] = Utility::loadMaterialFromFile(materialNames[i].data());
+	}
+
+	//TODO remove this materials[0] = new GenericMvpSolid[1];
+	//((GenericMvpSolid*)materials)->colour = glm::vec3(0,1,0);
 }
 
 Model::~Model(){
 	delete[] meshes;
+	for(unsigned int i=0; i<materialsCount; i++){
+		delete materials[i];
+	}
+	delete[] materials;
 }
 
 void Model::draw(glm::mat4& mvp){
-	for(int i=0; i<meshCount;i++){
-		//placeholder
-		materials->loadUniforms(mvp);
+	for(unsigned int i=0; i<meshCount; i++){
+		materials[i]->loadUniforms(mvp);
 
 		meshes[i].loadVertexData();
 		glDrawArrays(GL_TRIANGLES,0,meshes[i].vertexCount);

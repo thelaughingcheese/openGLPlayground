@@ -28,7 +28,7 @@ namespace Utility{
 	Model* getModel(const char* modelName);
 	GLuint getTexture(const char* textureName);
 
-	Material* loadMaterialFromFile(char* materialName);
+	Material* loadMaterialFromFile(const char* materialName);
 }
 
 #endif

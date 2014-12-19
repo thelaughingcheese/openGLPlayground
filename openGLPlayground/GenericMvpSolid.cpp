@@ -1,5 +1,7 @@
 #include "GenericMvpSolid.h"
 #include "LoadShaders.h"
+#include <iostream>
+#include <sstream>
 
 REGISTER_MATERIAL(GenericMvpSolid)
 
@@ -22,6 +24,26 @@ void GenericMvpSolid::loadUniforms(glm::mat4& mvp){
 	glUniform3fv(colourId,1,&colour[0]);
 }
 
-void GenericMvpSolid::loadMaterialData(std::string data){
+void GenericMvpSolid::loadMaterialData(std::string& data){
 	//TODO read data, populate material parameters
+	//use parser!! takes file and privides map of keys and values
+	//colour = glm::vec3(1,0,0);
+
+	std::stringstream dataStream(data);
+	while(!dataStream.eof()){
+		std::string key;
+		dataStream >> key;
+		if(key[0] == '#'){
+			key = key.substr(1);
+			if(key == "colour"){
+				std::string r,g,b;
+				dataStream >> r >> g >> b;
+				colour = glm::vec3(std::stof(r)/255,std::stof(g)/255,std::stof(b)/255);
+			}
+		}
+		else{
+			std::cout << "material parameters invalid format" << std::endl;
+			return;
+		}
+	}
 }

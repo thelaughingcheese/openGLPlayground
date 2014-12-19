@@ -10,17 +10,14 @@ private:
 	static GLuint MVPId;
 	static GLuint colourId;
 
-	//glm::vec3 colour;
+	glm::vec3 colour;
 public:
 	static void initMaterial();
 
 	GenericMvpSolid();
 
 	void loadUniforms(glm::mat4& mvp);
-	void loadMaterialData(std::string data);
-
-	//TODO make private after implement load from file
-	glm::vec3 colour;
+	void loadMaterialData(std::string& data);
 };
 
 #endif

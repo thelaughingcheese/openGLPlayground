@@ -47,10 +47,10 @@ int main(int argc,char** argv){
 		//----------------
 
 		Texture2D sampleTex("textures/uvtemplate.bmp");
-		ModelEntity xAxisArrow("arrow");
-		ModelEntity yAxisArrow("arrow");
+		ModelEntity xAxisArrow("arrowX");
+		ModelEntity yAxisArrow("arrowY");
 		yAxisArrow.setOrientation(glm::vec3(0,0,90));
-		ModelEntity zAxisArrow("arrow");
+		ModelEntity zAxisArrow("arrowZ");
 		zAxisArrow.setOrientation(glm::vec3(0,-90,0));
 
 		GLuint VertexArrayID;

@@ -11,7 +11,7 @@ protected:
 	static GLuint programID;
 public:
 	static void initMaterial();
-	virtual void loadMaterialData(std::string data) = 0;
+	virtual void loadMaterialData(std::string& data) = 0;
 	virtual void loadUniforms(glm::mat4& mvp) = 0;
 };
 
@@ -23,16 +23,16 @@ public:
 
 class MaterialDictionary{
 public:
-	static std::unordered_map<const char*,MaterialRecord*>* getMaterialDictionary(){
-		static std::unordered_map<const char*,MaterialRecord*> MaterialDictionary;
+	static std::unordered_map<std::string,MaterialRecord*>* getMaterialDictionary(){
+		static std::unordered_map<std::string,MaterialRecord*> MaterialDictionary;
 		return &MaterialDictionary;
 	}
-	static void registerInitializer(const char* name,MaterialRecord* initializer){
+	static void registerInitializer(std::string name,MaterialRecord* initializer){
 		(*MaterialDictionary::getMaterialDictionary())[name] = initializer;
 	}
 	static void initMaterials(){
-		std::unordered_map<const char*,MaterialRecord*>* dict = getMaterialDictionary();
-		std::unordered_map<const char*,MaterialRecord*>::iterator it = dict->begin();
+		std::unordered_map<std::string,MaterialRecord*>* dict = getMaterialDictionary();
+		std::unordered_map<std::string,MaterialRecord*>::iterator it = dict->begin();
 		for(; it != dict->end(); ++it){
 			it->second->init();
 		}

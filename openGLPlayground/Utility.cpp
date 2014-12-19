@@ -3,6 +3,8 @@
 #include "Texture2D.h"
 #include "LoadShaders.h"
 #include "GenericMvpSolid.h"
+#include <iostream>
+#include <fstream>
 
 //0 is Null entity
 EntityID NextEntityID = 1;
@@ -63,7 +65,23 @@ GLuint Utility::getTexture(const char* textureName){
 	}
 }
 
-Material* Utility::loadMaterialFromFile(char* materialName){
-	//TODO find material file, create new material instance, populate with texture data
-	return 0;
+Material* Utility::loadMaterialFromFile(const char* materialName){
+	std::ifstream materialFile(std::string("materials/")+materialName,std::ios::binary);
+	if(!materialFile.is_open()){
+		std::cout << std::endl << "material " << materialName << " not found" << std::endl;
+		return 0;
+	}
+	char line[128];
+	materialFile.getline(line,128);
+	std::string shader = line;
+	shader = shader.substr(0,shader.size()-1);
+	std::string data;
+	while(!materialFile.eof()){
+		materialFile.getline(line,128);
+		data += line;
+	}
+	MaterialRecord* p = (*MaterialDictionary::getMaterialDictionary())[shader.data()];
+	Material* rtn = p->create();
+	rtn->loadMaterialData(data);
+	return rtn;
 }
