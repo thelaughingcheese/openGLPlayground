@@ -18,6 +18,7 @@ public:
 class MaterialRecord{
 public:
 	virtual void init() = 0;
+	virtual void unload() = 0;
 	virtual Material* create() = 0;
 };
 
@@ -37,6 +38,13 @@ public:
 			it->second->init();
 		}
 	}
+	static void unloadMaterials(){
+		std::unordered_map<std::string,MaterialRecord*>* dict = getMaterialDictionary();
+		std::unordered_map<std::string,MaterialRecord*>::iterator it = dict->begin();
+		for(; it != dict->end(); ++it){
+			it->second->unload();
+		}
+	}
 };
 
 template<class T>
@@ -48,6 +56,10 @@ public:
 
 	void init(){
 		T::initMaterial();
+	}
+
+	void unload(){
+		T::unloadMaterial();
 	}
 
 	Material* create(){

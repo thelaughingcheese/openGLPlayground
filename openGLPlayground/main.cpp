@@ -63,15 +63,6 @@ int main(int argc,char** argv){
 		Camera camera(45,4.0/3.0,glm::vec3(0,10,30));
 		Utility::curCamera = &camera;
 
-		/*GLuint vertexbuffer;
-		glGenBuffers(1,&vertexbuffer);
-		glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
-		glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data,GL_STATIC_DRAW);
-		GLuint uvBuffer;
-		glGenBuffers(1,&uvBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
-		glBufferData(GL_ARRAY_BUFFER,sizeof(g_uv_buffer_data),g_uv_buffer_data,GL_STATIC_DRAW);*/
-
 		double xMouse, yMouse;
 		glfwSetCursorPos(window,512,768/2);
 		glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
@@ -103,11 +94,6 @@ int main(int argc,char** argv){
 			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
 			lastTime = glfwGetTime();
 
-			/*glUseProgram(Utility::basicShaderProgram);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D,sampleTex.getTextureID());
-			glUniform1i(Utility::baseTextureUniform,0);*/
-
 			xAxisArrow.draw();
 			yAxisArrow.draw();
 			zAxisArrow.draw();
@@ -119,9 +105,9 @@ int main(int argc,char** argv){
 		while(glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
 
-		//glDeleteBuffers(1,&vertexbuffer);
-		//glDeleteVertexArrays(1,&VertexArrayID);
-		//glDeleteProgram(Utility::basicShaderProgram);
+		Utility::unloadModels();
+		Utility::unloadTextures();
+		Utility::unloadShaders();
 
 		glfwTerminate();
 

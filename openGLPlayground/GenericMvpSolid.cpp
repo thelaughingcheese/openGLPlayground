@@ -10,9 +10,13 @@ GLuint GenericMvpSolid::MVPId;
 GLuint GenericMvpSolid::colourId;
 
 void GenericMvpSolid::initMaterial(){
-	GenericMvpSolid::programID = LoadShaders("shaders/GenericMvpSolid.vertexshader","shaders/GenericMvpSolid.fragmentshader");
-	MVPId = glGetUniformLocation(GenericMvpSolid::programID,"MVP");
-	colourId = glGetUniformLocation(GenericMvpSolid::programID,"colour");
+	programID = LoadShaders("shaders/GenericMvpSolid.vertexshader","shaders/GenericMvpSolid.fragmentshader");
+	MVPId = glGetUniformLocation(programID,"MVP");
+	colourId = glGetUniformLocation(programID,"colour");
+}
+
+void GenericMvpSolid::unloadMaterial(){
+	glDeleteProgram(programID);
 }
 
 GenericMvpSolid::GenericMvpSolid(){

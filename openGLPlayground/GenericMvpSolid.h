@@ -13,6 +13,7 @@ private:
 	glm::vec3 colour;
 public:
 	static void initMaterial();
+	static void unloadMaterial();
 
 	GenericMvpSolid();
 

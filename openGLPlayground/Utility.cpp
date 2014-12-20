@@ -20,6 +20,10 @@ void Utility::initShaders(){
 	MaterialDictionary::initMaterials();
 }
 
+void Utility::unloadShaders(){
+	MaterialDictionary::unloadMaterials();
+}
+
 EntityID Utility::getNewEntityID(){
 	return NextEntityID++;
 }
@@ -84,4 +88,20 @@ Material* Utility::loadMaterialFromFile(const char* materialName){
 	Material* rtn = p->create();
 	rtn->loadMaterialData(data);
 	return rtn;
+}
+
+void Utility::unloadModels(){
+	std::unordered_map<const char*,Model*>::iterator it = loadedModels.begin();
+	for(; it != loadedModels.end(); ++it){
+		delete it->second;
+	}
+	loadedModels.clear();
+}
+
+void Utility::unloadTextures(){
+	std::unordered_map<const char*,Texture2D*>::iterator it = loadedTextures.begin();
+	for(; it != loadedTextures.end(); ++it){
+		delete it->second;
+	}
+	loadedTextures.clear();
 }

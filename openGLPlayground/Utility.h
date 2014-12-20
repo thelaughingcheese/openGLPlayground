@@ -16,6 +16,7 @@ namespace Utility{
 	extern Camera* curCamera;
 
 	void initShaders();
+	void unloadShaders();
 
 	EntityID getNewEntityID();
 
@@ -29,6 +30,9 @@ namespace Utility{
 	GLuint getTexture(const char* textureName);
 
 	Material* loadMaterialFromFile(const char* materialName);
+
+	void unloadModels();
+	void unloadTextures();
 }
 
 #endif
