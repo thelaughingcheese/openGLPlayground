@@ -95,6 +95,7 @@ void Camera::draw(){
 	glDrawBuffers(1,drawBuffers);
 
 	glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
+	glViewport(0,0,width,height);
 
 	std::unordered_map<EntityID,ModelEntity*>::iterator it = ModelEntity::modelEntities.begin();
 	for(; it != ModelEntity::modelEntities.end(); it++){
