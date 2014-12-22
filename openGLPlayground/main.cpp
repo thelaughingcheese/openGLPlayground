@@ -96,6 +96,8 @@ int main(int argc,char** argv){
 
 			camera.draw();
 
+
+
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 			while(glfwGetTime() - lastTime < 0.012);

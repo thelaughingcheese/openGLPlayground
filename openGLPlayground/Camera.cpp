@@ -94,6 +94,8 @@ void Camera::draw(){
 	GLenum drawBuffers[1] ={GL_COLOR_ATTACHMENT0};
 	glDrawBuffers(1,drawBuffers);
 
+	glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
+
 	std::unordered_map<EntityID,ModelEntity*>::iterator it = ModelEntity::modelEntities.begin();
 	for(; it != ModelEntity::modelEntities.end(); it++){
 		it->second->draw(getVPMatrix());
