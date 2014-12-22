@@ -20,10 +20,6 @@ namespace Utility{
 
 	EntityID getNewEntityID();
 
-	void trackEntity(Entity* ent);
-	void untrackEntity(EntityID id);
-	void untrackEntity(Entity* ent);
-
 	Entity* getEntityByID(EntityID id);
 
 	Model* getModel(const char* modelName);

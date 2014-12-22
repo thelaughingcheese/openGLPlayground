@@ -1,13 +1,15 @@
 #include "Entity.h"
 #include "Utility.h"
 
+std::unordered_map<EntityID,Entity*> Entity::entities;
+
 Entity::Entity(){
 	entityID = Utility::getNewEntityID();
-	Utility::trackEntity(this);
+	entities.insert(std::pair<EntityID,Entity*>(entityID,this));
 }
 
 Entity::~Entity(){
-	Utility::untrackEntity(entityID);
+	entities.erase(entityID);
 }
 
 EntityID Entity::getEntityID(){

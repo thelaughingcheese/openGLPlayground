@@ -60,7 +60,7 @@ int main(int argc,char** argv){
 		// Create and compile our GLSL program from the shaders
 		Utility::initShaders();
 
-		Camera camera(45,4.0/3.0,glm::vec3(0,10,30));
+		Camera camera(1024,768,4.0/3.0,glm::vec3(0,10,30));
 		Utility::curCamera = &camera;
 
 		double xMouse, yMouse;
@@ -94,9 +94,7 @@ int main(int argc,char** argv){
 			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
 			lastTime = glfwGetTime();
 
-			xAxisArrow.draw();
-			yAxisArrow.draw();
-			zAxisArrow.draw();
+			camera.draw();
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();

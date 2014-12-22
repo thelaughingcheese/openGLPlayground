@@ -9,8 +9,6 @@
 //0 is Null entity
 EntityID NextEntityID = 1;
 
-std::unordered_map<EntityID,Entity*> Entities;
-
 std::unordered_map<const char*,Model*> loadedModels;
 std::unordered_map<const char*,Texture2D*> loadedTextures;
 
@@ -28,19 +26,9 @@ EntityID Utility::getNewEntityID(){
 	return NextEntityID++;
 }
 
-void Utility::trackEntity(Entity* ent){
-	Entities.insert(std::pair<EntityID,Entity*>(ent->getEntityID(),ent));
-}
-void Utility::untrackEntity(EntityID id){
-	Entities.erase(id);
-}
-void Utility::untrackEntity(Entity* ent){
-	Entities.erase(ent->getEntityID());
-}
-
 Entity* getEntityByID(EntityID id){
 	try{
-		return Entities.at(id);
+		return Entity::entities.at(id);
 	}
 	catch(std::out_of_range exep){
 		return 0;

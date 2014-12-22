@@ -2,13 +2,17 @@
 #include "Utility.h"
 #include <glm/gtx/transform.hpp>
 
+std::unordered_map<EntityID,ModelEntity*> ModelEntity::modelEntities;
+
 ModelEntity::ModelEntity(const char* modelName){
+	modelEntities.insert(std::pair<EntityID,ModelEntity*>(this->getEntityID(),this));
+
 	setModel(modelName);
 	position = glm::vec3(0,0,0);
 	orientation = glm::vec3(0,0,0);
 }
 ModelEntity::~ModelEntity(){
-
+	modelEntities.erase(this->getEntityID());
 }
 
 void ModelEntity::setPosition(glm::vec3 pos){
@@ -40,8 +44,8 @@ Model* ModelEntity::getModel(){
 	return model;
 }
 
-void ModelEntity::draw(){
-	glm::mat4 mvp = Utility::curCamera->getVPMatrix() * worldTransform;
+void ModelEntity::draw(glm::mat4& vp){
+	glm::mat4 mvp = vp * worldTransform;
 
 	model->draw(mvp);
 }

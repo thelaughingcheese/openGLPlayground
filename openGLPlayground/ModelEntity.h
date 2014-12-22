@@ -17,6 +17,8 @@ private:
 	glm::vec3 orientation;	//euler
 	glm::mat4 worldTransform;
 public:
+	static std::unordered_map<EntityID,ModelEntity*> modelEntities;
+
 	ModelEntity(const char* modelName);
 	~ModelEntity();
 
@@ -29,7 +31,7 @@ public:
 	void setModel(const char* modelName);
 	Model* getModel();
 
-	virtual void draw();
+	virtual void draw(glm::mat4& vp);
 };
 
 #endif
