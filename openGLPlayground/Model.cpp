@@ -131,9 +131,6 @@ Model::Model(const char* modelName){
 	for(unsigned int i=0; i<materialsCount; i++){
 		materials[i] = Utility::loadMaterialFromFile(materialNames[i].data());
 	}
-
-	//TODO remove this materials[0] = new GenericMvpSolid[1];
-	//((GenericMvpSolid*)materials)->colour = glm::vec3(0,1,0);
 }
 
 Model::~Model(){

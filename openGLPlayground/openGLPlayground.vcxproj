@@ -69,13 +69,17 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GenericMvpSolid.cpp" />
+    <ClCompile Include="GenericTextured.cpp" />
+    <ClCompile Include="Imu.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelEntity.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
     <ClCompile Include="StereoscopicViewport.cpp" />
+    <ClCompile Include="Serial.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Viewport.cpp" />
@@ -84,12 +88,15 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GenericMvpSolid.h" />
+    <ClInclude Include="GenericTextured.h" />
     <ClInclude Include="GenericVertexLit.h" />
+    <ClInclude Include="Imu.h" />
     <ClInclude Include="LoadShaders.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelEntity.h" />
+    <ClInclude Include="Serial.h" />
     <ClInclude Include="StereoscopicCamera.h" />
     <ClInclude Include="StereoscopicViewport.h" />
     <ClInclude Include="Texture2D.h" />
@@ -101,6 +108,8 @@
     <None Include="shaders\GenericMvpSolid.vertexshader" />
     <None Include="shaders\PassThrough.fragmentshader" />
     <None Include="shaders\PassThrough.vertexshader" />
+    <None Include="shaders\GenericTextured.fragmentshader" />
+    <None Include="shaders\GenericTextured.vertexshader" />
     <None Include="SimpleFragmentShader.fragmentshader" />
     <None Include="SimpleVertexShader.vertexshader" />
   </ItemGroup>

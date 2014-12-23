@@ -15,6 +15,9 @@ Texture2D::~Texture2D(){
 
 bool Texture2D::loadBmp(const char* filePath){
 	unload();
+	std::string nfilep = "materials/";
+	nfilep += filePath;
+	filePath = nfilep.data();
 	std::ifstream file(filePath,std::ios::binary);
 	if(!file.is_open()){
 		std::cout << "Could not load texture: " << filePath << std::endl;

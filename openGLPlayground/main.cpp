@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "Texture2D.h"
 #include "ModelEntity.h"
+#include "Imu.h"
 #include "StereoscopicViewport.h"
 
 int main(int argc,char** argv){
@@ -47,12 +48,14 @@ int main(int argc,char** argv){
 
 		//----------------
 
-		Texture2D sampleTex("textures/uvtemplate.bmp");
 		ModelEntity xAxisArrow("arrowX");
 		ModelEntity yAxisArrow("arrowY");
 		yAxisArrow.setOrientation(glm::vec3(0,0,90));
 		ModelEntity zAxisArrow("arrowZ");
 		zAxisArrow.setOrientation(glm::vec3(0,-90,0));
+		ModelEntity accelArrow("greyArrow");
+
+		Imu imu("COM2",&accelArrow);
 
 		GLuint VertexArrayID;
 		glGenVertexArrays(1,&VertexArrayID);
@@ -74,7 +77,7 @@ int main(int argc,char** argv){
 		glfwSetCursorPos(window,windowX/2,windowY/2);
 		glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
 		double lastTime = glfwGetTime();
-
+		
 		do{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glfwGetCursorPos(window,&xMouse,&yMouse);
@@ -100,6 +103,9 @@ int main(int argc,char** argv){
 
 			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
 			lastTime = glfwGetTime();
+
+			imu.update();
+
 
 			viewport.draw();
 
