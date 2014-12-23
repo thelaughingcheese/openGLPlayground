@@ -12,8 +12,6 @@ EntityID NextEntityID = 1;
 std::unordered_map<const char*,Model*> loadedModels;
 std::unordered_map<const char*,Texture2D*> loadedTextures;
 
-Camera* Utility::curCamera;
-
 void Utility::initShaders(){
 	MaterialDictionary::initMaterials();
 }

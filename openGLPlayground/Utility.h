@@ -13,8 +13,6 @@ entity distruction
 #include "Material.h"
 
 namespace Utility{
-	extern Camera* curCamera;
-
 	void initShaders();
 	void unloadShaders();
 

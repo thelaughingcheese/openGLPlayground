@@ -57,6 +57,9 @@
     <ClCompile Include="GenericMvpSolid.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
+    <ClCompile Include="Viewport.cpp">
+      <Filter>Source Files\Fundementals</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LoadShaders.h">
@@ -92,6 +95,9 @@
     <ClInclude Include="GenericMvpSolid.h">
       <Filter>Source Files\Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Viewport.h">
+      <Filter>Source Files\Fundementals</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleFragmentShader.fragmentshader">
@@ -104,6 +110,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="shaders\GenericMvpSolid.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\PassThrough.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\PassThrough.vertexshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

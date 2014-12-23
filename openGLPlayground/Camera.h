@@ -32,6 +32,10 @@ public:
 	void setAspect(float f);
 	float getAspect();
 
+	void setResolution(unsigned int w, unsigned int h);
+	unsigned int getWidth();
+	unsigned int getHeight();
+
 	glm::mat4 getVPMatrix();
 	glm::vec3 getForwardVector();
 	glm::vec3 getRightVector();

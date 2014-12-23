@@ -9,8 +9,7 @@ Camera::Camera(unsigned int w,unsigned int h,float f,glm::vec3 pos,glm::vec2 ori
 	position = pos;
 	orientation = ori;
 	fov = f;
-	width = w;
-	height = h;
+	setResolution(w,h);
 	aspectRatio = float(width)/float(height);
 
 	nearClipping = 0.1f;
@@ -23,14 +22,6 @@ Camera::Camera(unsigned int w,unsigned int h,float f,glm::vec3 pos,glm::vec2 ori
 	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer);
 	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,w,h);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,renderBuffer);
-
-	glGenTextures(1,&renderTexture);
-	glBindTexture(GL_TEXTURE_2D,renderTexture);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,w,h,0,GL_RGB,GL_UNSIGNED_BYTE,0);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 }
 
 Camera::~Camera(){
@@ -72,6 +63,26 @@ float Camera::getAspect(){
 	return aspectRatio;
 }
 
+void Camera::setResolution(unsigned int w,unsigned int h){
+	width = w;
+	height = h;
+
+	glDeleteTextures(1,&renderTexture);
+	glGenTextures(1,&renderTexture);
+	glBindTexture(GL_TEXTURE_2D,renderTexture);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,w,h,0,GL_RGB,GL_UNSIGNED_BYTE,0);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+}
+unsigned int Camera::getWidth(){
+	return width;
+}
+unsigned int Camera::getHeight(){
+	return height;
+}
+
 glm::mat4 Camera::getVPMatrix(){
 	glm::vec3 lookAt = position + orientationMatrix * glm::vec3(0,0,-1);
 	return glm::perspective(fov,aspectRatio,nearClipping,farClipping) * glm::lookAt(position,lookAt,glm::vec3(0,1,0));
@@ -96,13 +107,14 @@ void Camera::draw(){
 
 	glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
 	glViewport(0,0,width,height);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+		std::cout << "Frame buffer not ok!" << std::endl;
+	}
 
 	std::unordered_map<EntityID,ModelEntity*>::iterator it = ModelEntity::modelEntities.begin();
 	for(; it != ModelEntity::modelEntities.end(); it++){
 		it->second->draw(getVPMatrix());
-	}
-
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-		std::cout << "Frame buffer not ok!" << std::endl;
 	}
 }

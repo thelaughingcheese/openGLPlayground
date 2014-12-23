@@ -76,6 +76,7 @@
     <ClCompile Include="ModelEntity.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -89,10 +90,13 @@
     <ClInclude Include="ModelEntity.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\GenericMvpSolid.fragmentshader" />
     <None Include="shaders\GenericMvpSolid.vertexshader" />
+    <None Include="shaders\PassThrough.fragmentshader" />
+    <None Include="shaders\PassThrough.vertexshader" />
     <None Include="SimpleFragmentShader.fragmentshader" />
     <None Include="SimpleVertexShader.vertexshader" />
   </ItemGroup>

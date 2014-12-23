@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "Texture2D.h"
 #include "ModelEntity.h"
+#include "Viewport.h"
 
 int main(int argc,char** argv){
 		if(!glfwInit())
@@ -61,13 +62,13 @@ int main(int argc,char** argv){
 		Utility::initShaders();
 
 		Camera camera(1024,768,4.0/3.0,glm::vec3(0,10,30));
-		Utility::curCamera = &camera;
+		Viewport viewport(&camera);
 
 		double xMouse, yMouse;
 		glfwSetCursorPos(window,512,768/2);
 		glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
 		double lastTime = glfwGetTime();
-		
+
 		do{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glfwGetCursorPos(window,&xMouse,&yMouse);
@@ -94,9 +95,7 @@ int main(int argc,char** argv){
 			//std::cout << 1/(glfwGetTime() - lastTime) << std::endl;
 			lastTime = glfwGetTime();
 
-			camera.draw();
-
-
+			viewport.draw();
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
