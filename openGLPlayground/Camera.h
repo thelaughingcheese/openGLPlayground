@@ -29,7 +29,6 @@ public:
 	glm::vec2 getOri();
 	void setFov(float f);
 	float getFov();
-	void setAspect(float f);
 	float getAspect();
 
 	void setResolution(unsigned int w, unsigned int h);

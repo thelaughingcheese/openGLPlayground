@@ -55,10 +55,6 @@ float Camera::getFov(){
 	return fov;
 }
 
-void Camera::setAspect(float a){
-	aspectRatio = a;
-}
-
 float Camera::getAspect(){
 	return aspectRatio;
 }

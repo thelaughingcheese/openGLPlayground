@@ -60,6 +60,12 @@
     <ClCompile Include="Viewport.cpp">
       <Filter>Source Files\Fundementals</Filter>
     </ClCompile>
+    <ClCompile Include="StereoscopicCamera.cpp">
+      <Filter>Source Files\Fundementals</Filter>
+    </ClCompile>
+    <ClCompile Include="StereoscopicViewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LoadShaders.h">
@@ -97,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="Viewport.h">
       <Filter>Source Files\Fundementals</Filter>
+    </ClInclude>
+    <ClInclude Include="StereoscopicCamera.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StereoscopicViewport.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

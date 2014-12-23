@@ -11,7 +11,7 @@
 #include "Camera.h"
 #include "Texture2D.h"
 #include "ModelEntity.h"
-#include "Viewport.h"
+#include "StereoscopicViewport.h"
 
 int main(int argc,char** argv){
 		if(!glfwInit())
@@ -25,7 +25,7 @@ int main(int argc,char** argv){
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-		GLFWwindow* window = glfwCreateWindow(1024,768,"Tutorial 02 - Red triangle",NULL,NULL);
+		GLFWwindow* window = glfwCreateWindow(1024,512,"Tutorial 02 - Red triangle",NULL,NULL);
 		if(window == NULL){
 			fprintf(stderr,"Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 			glfwTerminate();
@@ -61,20 +61,26 @@ int main(int argc,char** argv){
 		// Create and compile our GLSL program from the shaders
 		Utility::initShaders();
 
-		Camera camera(1024,768,4.0/3.0,glm::vec3(0,10,30));
-		Viewport viewport(&camera);
+		//Camera camera(1024,768,45.0,glm::vec3(0,10,30));
+		StereoscopicCamera camera(512,512,45.0,glm::vec3(0,10,30));
+		//Viewport viewport(&camera);
+		StereoscopicViewport viewport(&camera);
+		viewport.setResolution(1024,512);
+		camera.setSeperation(3);
 
 		double xMouse, yMouse;
-		glfwSetCursorPos(window,512,768/2);
+		int windowX,windowY;
+		glfwGetWindowSize(window,&windowX,&windowY);
+		glfwSetCursorPos(window,windowX/2,windowY/2);
 		glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
 		double lastTime = glfwGetTime();
 
 		do{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glfwGetCursorPos(window,&xMouse,&yMouse);
-			xMouse -= 512; xMouse /= 16;
-			yMouse -= 768/2; yMouse /= 16;
-			glfwSetCursorPos(window,512,768/2);
+			xMouse -= windowX/2; xMouse /= 16;
+			yMouse -= windowY/2; yMouse /= 16;
+			glfwSetCursorPos(window,windowX/2,windowY/2);
 			glm::vec3 changePos(0,0,0);
 			if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
 				changePos += 0.4f * camera.getForwardVector();

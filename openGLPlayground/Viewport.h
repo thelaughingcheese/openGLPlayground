@@ -4,7 +4,7 @@
 #include "Camera.h"
 
 class Viewport{
-private:
+protected:
 	Camera* camera;
 	unsigned int width,height;
 
@@ -12,9 +12,15 @@ private:
 	static GLuint passThroughTexture;
 	static bool initialized;
 	static const float viewportQuad[];
+	static const float viewportQuadUvs[];
 	static GLuint viewportQuadBuffer;
+	static GLuint viewportQuadUvsBuffer;
+	static GLuint viewportVertexArray;
+
+	void firstInit();
 public:
 	Viewport(Camera* cam);
+	Viewport();
 
 	void draw();
 	void setCamera(Camera* cam);
