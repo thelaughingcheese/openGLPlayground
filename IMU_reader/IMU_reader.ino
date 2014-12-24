@@ -5,6 +5,7 @@
 
 //int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 int16_t data[7];
+unsigned long lastUpdate = 0;
 
 void setup(){
   Serial.begin(9600);
@@ -17,7 +18,8 @@ void setup(){
 }
 
 void loop(){
-  while(!Serial.available()){ }
+  while(!Serial.available()){}
+  
   
   Wire.beginTransmission(MPU);
   Wire.write(0x3b);
@@ -32,7 +34,10 @@ void loop(){
   data[5]=Wire.read()<<8|Wire.read();
   data[6]=Wire.read()<<8|Wire.read();
   
+  unsigned long delta = micros() - lastUpdate;
+  
   Serial.write((byte*)data,14);
+  Serial.write((byte*)&delta,4);
   /*Serial.print(data[0]);Serial.write(",");
   Serial.print(data[1]);Serial.write(",");
   Serial.print(data[2]);Serial.write(",");
@@ -41,6 +46,7 @@ void loop(){
   Serial.print(data[5]);Serial.write(",");
   Serial.print(data[6]);Serial.write("\n");*/
   
+  lastUpdate = micros();
   //flush
   while(Serial.available()){
     Serial.read();

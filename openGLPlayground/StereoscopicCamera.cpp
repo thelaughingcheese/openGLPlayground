@@ -53,6 +53,9 @@ float StereoscopicCamera::getAspect(){
 void StereoscopicCamera::setResolution(unsigned int w,unsigned int h){
 	leftCam.setResolution(w,h);
 	rightCam.setResolution(w,h);
+	width = w;
+	height = h;
+	aspectRatio = float(width)/float(height);
 }
 
 unsigned int StereoscopicCamera::getWidth(){

@@ -58,7 +58,7 @@ void StereoscopicViewport::firstInit(){
 
 StereoscopicViewport::StereoscopicViewport(StereoscopicCamera* cam){
 	stereoCamera = cam;
-	setResolution(cam->getWidth(),cam->getHeight());
+	setResolution(cam->getWidth()*2,cam->getHeight());
 	firstInit();
 }
 

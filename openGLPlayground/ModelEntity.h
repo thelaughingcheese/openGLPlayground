@@ -6,6 +6,7 @@ contains a model and can be represented in the world
 
 #include "Entity.h"
 #include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "Model.h"
 
@@ -14,7 +15,7 @@ private:
 	Model* model;
 
 	glm::vec3 position;
-	glm::vec3 orientation;	//euler
+	glm::quat orientation;	//euler
 	glm::mat4 worldTransform;
 public:
 	static std::unordered_map<EntityID,ModelEntity*> modelEntities;
@@ -25,8 +26,8 @@ public:
 	void setPosition(glm::vec3 pos);
 	glm::vec3 getPosition();
 
-	void setOrientation(glm::vec3 ori);
-	glm::vec3 getOrientation();
+	void setOrientation(glm::quat ori);
+	glm::quat getOrientation();
 
 	void setModel(const char* modelName);
 	Model* getModel();

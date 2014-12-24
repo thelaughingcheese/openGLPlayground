@@ -57,25 +57,25 @@
     <ClCompile Include="GenericMvpSolid.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="GenericTextured.cpp">
-      <Filter>Source Files\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
+    <ClCompile Include="Viewport.cpp">
       <Filter>Source Files\Fundementals</Filter>
     </ClCompile>
-    <ClCompile Include="Serial.cpp">
+    <ClCompile Include="StereoscopicViewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Imu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Viewport.cpp">
-      <Filter>Source Files\Fundementals</Filter>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericTextured.cpp">
+      <Filter>Source Files\Materials</Filter>
     </ClCompile>
     <ClCompile Include="StereoscopicCamera.cpp">
-      <Filter>Source Files\Fundementals</Filter>
-    </ClCompile>
-    <ClCompile Include="StereoscopicViewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,14 +122,14 @@
     <ClInclude Include="StereoscopicViewport.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GenericTextured.h">
-      <Filter>Source Files\Materials</Filter>
+    <ClInclude Include="Imu.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Serial.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Imu.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GenericTextured.h">
+      <Filter>Source Files\Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -145,16 +145,16 @@
     <None Include="shaders\GenericMvpSolid.vertexshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\GenericTextured.fragmentshader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\GenericTextured.vertexshader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="shaders\PassThrough.fragmentshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="shaders\PassThrough.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GenericTextured.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GenericTextured.vertexshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

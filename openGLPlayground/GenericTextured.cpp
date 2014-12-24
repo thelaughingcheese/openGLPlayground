@@ -27,6 +27,7 @@ void GenericTextured::loadUniforms(glm::mat4& mvp){
 	glUseProgram(programID);
 	glUniformMatrix4fv(MVPId,1,GL_FALSE,&mvp[0][0]);
 	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,baseTexture);
 	glUniform1i(baseTexture,0);
 }
 

@@ -19,7 +19,6 @@ private:
 	GLuint renderBuffer;
 	GLuint renderTexture;
 public:
-
 	Camera(unsigned int w = 1024,unsigned int h = 768,float f = 45.0,glm::vec3 pos = glm::vec3(0,0,0),glm::vec2 ori = glm::vec2(0,0));
 	~Camera();
 

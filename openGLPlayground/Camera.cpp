@@ -9,8 +9,6 @@ Camera::Camera(unsigned int w,unsigned int h,float f,glm::vec3 pos,glm::vec2 ori
 	position = pos;
 	orientation = ori;
 	fov = f;
-	setResolution(w,h);
-	aspectRatio = float(width)/float(height);
 
 	nearClipping = 0.1f;
 	farClipping = 10000.0f;
@@ -18,10 +16,7 @@ Camera::Camera(unsigned int w,unsigned int h,float f,glm::vec3 pos,glm::vec2 ori
 	glGenFramebuffers(1,&frameBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
 
-	glGenRenderbuffers(1,&renderBuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,w,h);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,renderBuffer);
+	setResolution(w,h);
 }
 
 Camera::~Camera(){
@@ -62,15 +57,24 @@ float Camera::getAspect(){
 void Camera::setResolution(unsigned int w,unsigned int h){
 	width = w;
 	height = h;
+	aspectRatio = float(width)/float(height);
+
+	glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
 
 	glDeleteTextures(1,&renderTexture);
 	glGenTextures(1,&renderTexture);
 	glBindTexture(GL_TEXTURE_2D,renderTexture);
 	glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,w,h,0,GL_RGB,GL_UNSIGNED_BYTE,0);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+	glDeleteRenderbuffers(1,&renderBuffer);
+	glGenRenderbuffers(1,&renderBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER,renderBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,w,h);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,renderBuffer);
 }
 unsigned int Camera::getWidth(){
 	return width;

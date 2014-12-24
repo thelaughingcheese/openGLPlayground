@@ -46,16 +46,19 @@ int main(int argc,char** argv){
 
 		glClearColor(0.0f,0.0f,0.4f,0.0f);
 
+		//wireframe
+		//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 		//----------------
 
 		ModelEntity xAxisArrow("arrowX");
 		ModelEntity yAxisArrow("arrowY");
-		yAxisArrow.setOrientation(glm::vec3(0,0,90));
+		yAxisArrow.setOrientation(glm::angleAxis(glm::radians(90.0f),glm::vec3(0,0,1)));
 		ModelEntity zAxisArrow("arrowZ");
-		zAxisArrow.setOrientation(glm::vec3(0,-90,0));
+		zAxisArrow.setOrientation(glm::angleAxis(glm::radians(-90.0f),glm::vec3(0,1,0)));
 		ModelEntity accelArrow("greyArrow");
+		ModelEntity gyroArrow("box");
 
-		Imu imu("COM2",&accelArrow);
+		Imu imu("COM2",accelArrow,gyroArrow);
 
 		GLuint VertexArrayID;
 		glGenVertexArrays(1,&VertexArrayID);
@@ -64,11 +67,12 @@ int main(int argc,char** argv){
 		// Create and compile our GLSL program from the shaders
 		Utility::initShaders();
 
-		//Camera camera(1024,768,45.0,glm::vec3(0,10,30));
+		//Camera camera(2048,2048,45.0,glm::vec3(0,10,30));
 		StereoscopicCamera camera(512,512,45.0,glm::vec3(0,10,30));
 		//Viewport viewport(&camera);
+		//viewport.setResolution(1024,1024);
 		StereoscopicViewport viewport(&camera);
-		viewport.setResolution(1024,512);
+		//viewport.setResolution(512,256);
 		camera.setSeperation(3);
 
 		double xMouse, yMouse;
@@ -106,12 +110,11 @@ int main(int argc,char** argv){
 
 			imu.update();
 
-
 			viewport.draw();
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
-			while(glfwGetTime() - lastTime < 0.012);
+			while(glfwGetTime() - lastTime < 0.01666);
 		}
 		while(glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
