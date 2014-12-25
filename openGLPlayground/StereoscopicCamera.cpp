@@ -85,6 +85,9 @@ glm::vec3 StereoscopicCamera::getForwardVector(){
 glm::vec3 StereoscopicCamera::getRightVector(){
 	return leftCam.getRightVector();
 }
+glm::vec3 StereoscopicCamera::getUpVector(){
+	return leftCam.getUpVector();
+}
 
 void StereoscopicCamera::setSeperation(float sep){
 	seperationVector = glm::vec3(sep,0,0);

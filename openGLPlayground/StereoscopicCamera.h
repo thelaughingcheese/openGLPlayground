@@ -33,6 +33,7 @@ public:
 
 	glm::vec3 getForwardVector();
 	glm::vec3 getRightVector();
+	glm::vec3 getUpVector();
 
 	void draw();
 	void setSeperation(float sep);

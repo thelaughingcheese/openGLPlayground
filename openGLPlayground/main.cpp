@@ -55,14 +55,16 @@ int main(int argc,char** argv){
 		yAxisArrow.setOrientation(glm::angleAxis(glm::radians(90.0f),glm::vec3(0,0,1)));
 		ModelEntity zAxisArrow("arrowZ");
 		zAxisArrow.setOrientation(glm::angleAxis(glm::radians(-90.0f),glm::vec3(0,1,0)));
-		ModelEntity accelArrow("greyArrow");
+		ModelEntity accelArrow("box");
 		ModelEntity gyroArrow("box");
+		ModelEntity model3("greyArrow");
+		ModelEntity model4("greyArrow");
 
-		Imu imu("COM2",accelArrow,gyroArrow);
+		Imu imu("COM2",accelArrow,gyroArrow,model3,model4);
 
-		GLuint VertexArrayID;
+		/*GLuint VertexArrayID;
 		glGenVertexArrays(1,&VertexArrayID);
-		glBindVertexArray(VertexArrayID);
+		glBindVertexArray(VertexArrayID);*/
 
 		// Create and compile our GLSL program from the shaders
 		Utility::initShaders();
@@ -100,6 +102,12 @@ int main(int argc,char** argv){
 			}
 			if(glfwGetKey(window,GLFW_KEY_D) == GLFW_PRESS){
 				changePos += 0.4f * camera.getRightVector();
+			}
+			if(glfwGetKey(window,GLFW_KEY_SPACE) == GLFW_PRESS){
+				changePos += 0.4f * camera.getUpVector();
+			}
+			if(glfwGetKey(window,GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS){
+				changePos += -0.4f * camera.getUpVector();
 			}
 			camera.setPos(camera.getPos() + changePos);
 

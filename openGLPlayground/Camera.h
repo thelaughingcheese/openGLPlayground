@@ -37,6 +37,7 @@ public:
 	glm::mat4 getVPMatrix();
 	glm::vec3 getForwardVector();
 	glm::vec3 getRightVector();
+	glm::vec3 getUpVector();
 
 	GLuint getRenderTexture();
 	void draw();

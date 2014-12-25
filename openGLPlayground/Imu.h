@@ -9,9 +9,9 @@ private:
 	short ax,ay,az,t,gx,gy,gz;
 	unsigned long deltaTime;
 	Serial* serial;
-	ModelEntity* model,*model2;
+	ModelEntity* model,*model2,*model3,*model4;
 public:
-	Imu(char* port, ModelEntity& ent,ModelEntity& ent2);
+	Imu(char* port,ModelEntity& ent,ModelEntity& ent2,ModelEntity& ent3,ModelEntity& ent4);
 	~Imu();
 	void update();
 };

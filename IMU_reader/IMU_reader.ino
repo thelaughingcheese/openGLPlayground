@@ -14,6 +14,9 @@ void setup(){
   Wire.beginTransmission(MPU);
   Wire.write(0x6b);
   Wire.write(0);
+  Wire.endTransmission(false);
+  Wire.write(0x1b);
+  Wire.write(8);
   Wire.endTransmission(true);
 }
 
