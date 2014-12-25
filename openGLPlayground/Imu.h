@@ -11,7 +11,7 @@ private:
 	Serial* serial;
 	ModelEntity* model,*model2,*model3,*model4;
 public:
-	Imu(char* port,ModelEntity& ent,ModelEntity& ent2,ModelEntity& ent3,ModelEntity& ent4);
+	Imu(char* port,ModelEntity& ent,ModelEntity& ent2);
 	~Imu();
 	void update();
 };

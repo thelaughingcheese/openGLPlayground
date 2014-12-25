@@ -26,7 +26,7 @@ int main(int argc,char** argv){
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-		GLFWwindow* window = glfwCreateWindow(1024,512,"Tutorial 02 - Red triangle",NULL,NULL);
+		GLFWwindow* window = glfwCreateWindow(1536,768,"Tutorial 02 - Red triangle",NULL,NULL);
 		if(window == NULL){
 			fprintf(stderr,"Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 			glfwTerminate();
@@ -55,12 +55,10 @@ int main(int argc,char** argv){
 		yAxisArrow.setOrientation(glm::angleAxis(glm::radians(90.0f),glm::vec3(0,0,1)));
 		ModelEntity zAxisArrow("arrowZ");
 		zAxisArrow.setOrientation(glm::angleAxis(glm::radians(-90.0f),glm::vec3(0,1,0)));
-		ModelEntity accelArrow("box");
-		ModelEntity gyroArrow("box");
-		ModelEntity model3("greyArrow");
-		ModelEntity model4("greyArrow");
+		ModelEntity accelArrow("greyArrow");
+		ModelEntity gyroArrow("airplane");
 
-		Imu imu("COM2",accelArrow,gyroArrow,model3,model4);
+		Imu imu("COM2",accelArrow,gyroArrow);
 
 		/*GLuint VertexArrayID;
 		glGenVertexArrays(1,&VertexArrayID);
@@ -70,7 +68,7 @@ int main(int argc,char** argv){
 		Utility::initShaders();
 
 		//Camera camera(2048,2048,45.0,glm::vec3(0,10,30));
-		StereoscopicCamera camera(512,512,45.0,glm::vec3(0,10,30));
+		StereoscopicCamera camera(768,768,45.0,glm::vec3(0,10,30),glm::vec2(0,-10));
 		//Viewport viewport(&camera);
 		//viewport.setResolution(1024,1024);
 		StereoscopicViewport viewport(&camera);
