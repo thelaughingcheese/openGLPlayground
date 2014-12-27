@@ -2,8 +2,10 @@
 #include <iostream>
 #include <iomanip> 
 #include <glm/gtx/string_cast.hpp>
+#include <limits>
 
 #define MIN(a, b) ((a < b) ? a : b)
+#define MAX(a, b) ((a > b) ? a : b)
 
 Imu::Imu(char* port,ModelEntity& ent,ModelEntity& ent2){
 	model = &ent;
@@ -43,25 +45,21 @@ void Imu::update(){
 	glm::vec3 accelProj(accel.z,0,-accel.x);
 
 	glm::vec3 localRotAxis(gx,gz,-gy);
-	float dps = (float(glm::length(localRotAxis))/32768)*(325*deltaTime/1000000.0f);
+	float dps = (float(glm::length(localRotAxis))/32768)*(500*deltaTime/1000000.0f);
 
 	float verticalAngle = glm::degrees(glm::acos(glm::dot(glm::vec3(0,-1,0),accel)/glm::length(accel)));
-
-	glm::vec3 accelCross = glm::normalize(glm::cross(accel,glm::vec3(0,-1,0)));
 	glm::vec3 rotAxis = model2->getOrientation() * localRotAxis;
-	glm::vec3 yAngleTest = (glm::toMat3( model2->getOrientation()) * accelCross);
-		yAngleTest = glm::normalize(glm::vec3(yAngleTest.x,0,yAngleTest.z));
 	glm::quat accelQuat = glm::angleAxis(glm::radians(verticalAngle),glm::normalize(accelProj));
-	glm::vec3 accelTest = glm::toMat3(accelQuat)*accelCross;
-		accelTest = glm::normalize(glm::vec3(accelTest.x,0,accelTest.z));
-	float yAngle = glm::acos(MIN(glm::dot(yAngleTest,accelTest),1));
-	if(glm::cross(yAngleTest,accelTest).y > 0){
+	glm::vec3 rotationalConstraint = glm::toMat3(accelQuat) * glm::toMat3(glm::inverse(model2->getOrientation())) * glm::vec3(1,0,0);
+		rotationalConstraint = glm::normalize(glm::vec3(rotationalConstraint.x,0,rotationalConstraint.z));
+	float yAngle = glm::acos(MAX(MIN(glm::dot(glm::vec3(1,0,0),rotationalConstraint),1),-1));
+	if(glm::cross(rotationalConstraint,glm::vec3(1,0,0)).y < 0){
 		yAngle = -yAngle;
 	}
-	
-	glm::quat quat = glm::mix(glm::angleAxis(glm::radians(dps),glm::normalize(rotAxis)) * model2->getOrientation(),
+
+	glm::quat quat = glm::slerp(glm::angleAxis(glm::radians(dps),glm::normalize(rotAxis)) * model2->getOrientation(),
 							  glm::angleAxis(yAngle,glm::vec3(0,1,0))*accelQuat,
-							  0.04f);
+							  0.1f);
 	model2->setOrientation(quat);
 	model->setOrientation(glm::angleAxis(yAngle,glm::vec3(0,1,0))*accelQuat);
 
